@@ -2,6 +2,7 @@
 //
 
 #include <iostream>
+#include <string>
 #include "Helper.h"
 
 int main()
@@ -79,5 +80,71 @@ int main()
 	
 	Helper::ClearConsol();
 
+	std::cout << "\n";
+
+    
+
+	std::cout << "\n";
+	std::cout << "===================================\n";
+	std::cout << "         FALL SHELL ASYLUM\n";
+	std::cout << "===================================\n\n";
+
+	std::cout << "You wake up on a cold concrete floor, the smell of rust and\n";
+	std::cout << "antiseptic thick in the air. Fluorescent lights flicker\n";
+	std::cout << "somewhere down the hall. You don't remember how you got here.\n\n";
+
+	std::cout << "You don't remember much at all.\n\n";
+
+	std::cout << "The heavy door behind you has already sealed shut.\n";
+	std::cout << "The only way out... is through.\n\n";
+
+	std::cout << "Find a way out of Fall Shell Asylum before it's too late.\n";
+	std::cout << "Your Health and Sanity will guide how far you can go.\n\n";
+	//std::cout << "Press Enter to Continue.\n\n";
+
+	std::cout << "===================================\n\n";
+
+	//std::cout << "Press Enter to Continue.\n\n";
+        
+	//std::cin.get();
+
+	bool running = true;
+
+	while (running)
+	{
+		std::cout << "\n--- What would you like to do? ---\n";
+		std::cout << "1. Move\n";
+		std::cout << "2. Look Around\n";
+		std::cout << "3. Check Inventory\n";
+		std::cout << "4. Check Stats\n";
+		std::cout << "0. Quit\n";
+		std::cout << "Enter choice: ";
+
+		std::vector<int> validChoices = { 0, 1, 2, 3, 4 };
+		int choice = Helper::GetMenuChoice(validChoices);
+
+		switch (choice)
+		{
+		case 1:
+			//Move();
+			break;
+		case 2:
+			//LookAround();
+			break;
+		case 3:
+			//CheckInventory();
+			break;
+		case 4:
+			//CheckStats();
+			break;
+		case 0:
+			running = false;
+			break;
+		}
+	}
+
+	std::cout << "\nThanks for playing.\n";
+
 	return 0;
+	
 }

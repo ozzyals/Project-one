@@ -66,5 +66,34 @@ namespace Helper {
 		return sum;
 	}
 
+	static int GetMenuChoice(const std::vector<int>& validChoices) {
+		std::string input;
+		int value = 0;
+		bool valid = false;
+
+		while (!valid)
+		{
+			std::cin >> input;
+
+			if (IsInteger(input.c_str()))
+			{
+				value = std::stoi(input);
+
+				for (int choice : validChoices)
+				{
+					if (choice == value)
+					{
+						valid = true;
+						break;
+					}
+				}
+			}
+
+			if (!valid)
+				std::cout << "Invalid choice, please try again: ";
+		}
+
+		return value;
+	}
 
 }
