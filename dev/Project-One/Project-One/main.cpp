@@ -4,6 +4,15 @@
 #include <iostream>
 #include <string>
 #include "Helper.h"
+#include "Player.h"
+#include "Asylum.h"
+#include "Room.h"
+
+// Forward declarations
+void Move(Player& player, Asylum& asylum);
+void LookAround(Player& player, Asylum& asylum, bool& canInteract);
+void CheckInventory(Player& player);
+void CheckStats(Player& player);
 
 int main()
 {
@@ -104,11 +113,14 @@ int main()
 
 	std::cout << "===================================\n\n";
 
-	//std::cout << "Press Enter to Continue.\n\n";
-        
-	//std::cin.get();
+	Player player("Survivor", 100, 100);
+	Asylum asylum(4, 4);
+
+	// Temporary hardcoded room for testing until Asylum has a real layout builder
+	asylum.GetRoom(0, 0) = Room("Entrance Hall", "A dim, dust-covered hall. The air is still.");
 
 	bool running = true;
+	bool canInteract = false;
 
 	while (running)
 	{
@@ -117,25 +129,36 @@ int main()
 		std::cout << "2. Look Around\n";
 		std::cout << "3. Check Inventory\n";
 		std::cout << "4. Check Stats\n";
+		
+		if (canInteract)
+			std::cout << "5. Interact\n";
+		
 		std::cout << "0. Quit\n";
 		std::cout << "Enter choice: ";
 
 		std::vector<int> validChoices = { 0, 1, 2, 3, 4 };
+		if (canInteract)
+			validChoices.push_back(5);
+
 		int choice = Helper::GetMenuChoice(validChoices);
 
 		switch (choice)
 		{
 		case 1:
-			//Move();
+			Move(player, asylum);
+			canInteract = false;
 			break;
 		case 2:
-			//LookAround();
+			LookAround(player, asylum, canInteract);
 			break;
 		case 3:
-			//CheckInventory();
+			CheckInventory(player);
 			break;
 		case 4:
-			//CheckStats();
+			CheckStats(player);
+			break;
+		case 5:
+			std::cout << "\n[Interact not yet implemented]\n";
 			break;
 		case 0:
 			running = false;
@@ -147,4 +170,90 @@ int main()
 
 	return 0;
 	
+}
+
+void Move(Player& player, Asylum& asylum)
+{
+	std::cout << "\nWhich direction? (N/S/E/W): ";
+	char direction;
+	std::cin >> direction;
+
+	int row = player.GetRow();
+	int col = player.GetCol();
+
+	if (direction == 'N' || direction == 'n')
+		row--;
+	else if (direction == 'S' || direction == 's')
+		row++;
+	else if (direction == 'E' || direction == 'e')
+		col++;
+	else if (direction == 'W' || direction == 'w')
+		col--;
+	else
+	{
+		std::cout << "Invalid direction.\n";
+		return;
+	}
+
+	if (!asylum.IsValidPosition(row, col))
+	{
+		std::cout << "You can't go that way.\n";
+		return;
+	}
+
+	player.SetPosition(row, col);
+	std::cout << "You move into " << asylum.GetRoom(row, col).GetName() << ".\n";
+}
+
+void LookAround(Player& player, Asylum& asylum, bool& canInteract)
+{
+	Room& room = asylum.GetRoom(player.GetRow(), player.GetCol());
+	room.SetExplored(true);
+
+	std::cout << "\n" << room.GetName() << "\n";
+	std::cout << room.GetDescription() << "\n\n";
+
+	std::cout << "Exits: ";
+	if (asylum.IsValidPosition(player.GetRow() - 1, player.GetCol())) std::cout << "North ";
+	if (asylum.IsValidPosition(player.GetRow() + 1, player.GetCol())) std::cout << "South ";
+	if (asylum.IsValidPosition(player.GetRow(), player.GetCol() - 1)) std::cout << "West ";
+	if (asylum.IsValidPosition(player.GetRow(), player.GetCol() + 1)) std::cout << "East ";
+	std::cout << "\n";
+
+	if (room.HasItems())
+	{
+		std::cout << "\nYou notice:\n";
+		for (Item& item : room.GetItems())
+		{
+			std::cout << " - " << item.GetName() << "\n";
+		}
+		canInteract = true;
+	}
+	else
+	{
+		canInteract = false;
+	}
+}
+
+void CheckInventory(Player& player)
+{
+	std::cout << "\n--- Inventory ---\n";
+
+	if (player.GetInventory().empty())
+	{
+		std::cout << "You have nothing.\n";
+		return;
+	}
+
+	for (Item& item : player.GetInventory())
+	{
+		std::cout << " - " << item.GetName() << "\n";
+	}
+}
+
+void CheckStats(Player& player)
+{
+	std::cout << "\n--- Stats ---\n";
+	std::cout << "Health: " << player.GetHealth() << "\n";
+	std::cout << "Sanity: " << player.GetSanity() << "\n";
 }
