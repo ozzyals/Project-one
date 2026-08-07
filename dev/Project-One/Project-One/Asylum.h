@@ -13,6 +13,7 @@ public:
 	int GetWidth() const;
 	int GetHeight() const;
 	bool IsValidPosition(int row, int col) const;
+	void BuildLayout();
 
 private:
 	std::vector<std::vector<Room>> grid;

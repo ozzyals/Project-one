@@ -114,13 +114,17 @@ int main()
 	std::cout << "===================================\n\n";
 
 	Player player("Survivor", 100, 100);
-	Asylum asylum(4, 4);
+	Asylum asylum(5, 5);
+	asylum.BuildLayout();
 
-	// Temporary hardcoded room for testing until Asylum has a real layout builder
-	asylum.GetRoom(0, 0) = Room("Entrance Hall", "A dim, dust-covered hall. The air is still.");
+	asylum.GetRoom(4, 2);
+	player.SetPosition(4, 2);
 
 	bool running = true;
 	bool canInteract = false;
+
+	//might replace with difrent initial description
+	LookAround(player, asylum, canInteract);
 
 	while (running)
 	{
@@ -147,6 +151,8 @@ int main()
 		case 1:
 			Move(player, asylum);
 			canInteract = false;
+			//Temporary for easier testing automatically looks around room when moving 
+			LookAround(player, asylum, canInteract);
 			break;
 		case 2:
 			LookAround(player, asylum, canInteract);
@@ -208,10 +214,12 @@ void Move(Player& player, Asylum& asylum)
 void LookAround(Player& player, Asylum& asylum, bool& canInteract)
 {
 	Room& room = asylum.GetRoom(player.GetRow(), player.GetCol());
-	room.SetExplored(true);
 
+	room.SetExplored(true);
+	//std::cout << "[DEBUG] Player at row=" << player.GetRow() << ", col=" << player.GetCol() << "\n";
 	std::cout << "\n" << room.GetName() << "\n";
 	std::cout << room.GetDescription() << "\n\n";
+	//std::cout << "[DEBUG] Grid size: " << asylum.GetWidth() << " x " << asylum.GetHeight() << "\n";
 
 	std::cout << "Exits: ";
 	if (asylum.IsValidPosition(player.GetRow() - 1, player.GetCol())) std::cout << "North ";

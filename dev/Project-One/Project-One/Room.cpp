@@ -5,6 +5,7 @@ Room::Room()
 	name = "Empty Room";
 	description = "";
 	explored = false;
+	blocked = false;
 }
 
 Room::Room(const std::string& _name, const std::string& _description)
@@ -12,6 +13,17 @@ Room::Room(const std::string& _name, const std::string& _description)
 	name = _name;
 	description = _description;
 	explored = false;
+	blocked = false;
+}
+
+bool Room::IsBlocked() const
+{
+	return blocked;
+}
+
+void Room::SetBlocked(bool _blocked)
+{
+	blocked = _blocked;
 }
 
 std::string Room::GetName() const

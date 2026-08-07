@@ -15,6 +15,9 @@ public:
 	std::vector<Item>& GetItems();
 	bool IsExplored() const;
 
+	bool IsBlocked() const;
+	void SetBlocked(bool _blocked);
+
 	void SetExplored(bool _explored);
 	void AddItem(const Item& item);
 	void RemoveItem(const std::string& itemName);
@@ -25,4 +28,5 @@ private:
 	std::string description;
 	std::vector<Item> items;
 	bool explored;
+	bool blocked;
 };
