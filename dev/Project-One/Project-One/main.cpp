@@ -113,7 +113,7 @@ int main()
 
 	std::cout << "===================================\n\n";
 
-	Player player("Survivor", 100, 100);
+	Player player("Survivor", 100);
 	Asylum asylum(5, 5);
 	asylum.BuildLayout();
 
@@ -262,6 +262,5 @@ void CheckInventory(Player& player)
 void CheckStats(Player& player)
 {
 	std::cout << "\n--- Stats ---\n";
-	std::cout << "Health: " << player.GetHealth() << "\n";
 	std::cout << "Sanity: " << player.GetSanity() << "\n";
 }

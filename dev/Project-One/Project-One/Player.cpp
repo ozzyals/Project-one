@@ -3,16 +3,14 @@
 Player::Player()
 {
 	name = "Player";
-	health = 100;
 	sanity = 100;
 	row = 0;
 	col = 0;
 }
 
-Player::Player(const std::string& _name, int _health, int _sanity)
+Player::Player(const std::string& _name, int _sanity)
 {
 	name = _name;
-	health = _health;
 	sanity = _sanity;
 	row = 0;
 	col = 0;
@@ -21,11 +19,6 @@ Player::Player(const std::string& _name, int _health, int _sanity)
 std::string Player::GetName() const
 {
 	return name;
-}
-
-int Player::GetHealth() const
-{
-	return health;
 }
 
 int Player::GetSanity() const
@@ -46,11 +39,6 @@ int Player::GetCol() const
 std::vector<Item>& Player::GetInventory()
 {
 	return inventory;
-}
-
-void Player::SetHealth(int _health)
-{
-	health = (_health < 0) ? 0 : _health;
 }
 
 void Player::SetSanity(int _sanity)
