@@ -13,6 +13,7 @@ void Move(Player& player, Asylum& asylum);
 void LookAround(Player& player, Asylum& asylum, bool& canInteract);
 void CheckInventory(Player& player);
 void CheckStats(Player& player);
+void Interact(Player& player, Asylum& asylum, bool& canInteract);
 
 int main()
 {
@@ -164,7 +165,7 @@ int main()
 			CheckStats(player);
 			break;
 		case 5:
-			std::cout << "\n[Interact not yet implemented]\n";
+			Interact(player, asylum, canInteract);
 			break;
 		case 0:
 			running = false;
@@ -263,4 +264,47 @@ void CheckStats(Player& player)
 {
 	std::cout << "\n--- Stats ---\n";
 	std::cout << "Sanity: " << player.GetSanity() << "\n";
+}
+
+void Interact(Player& player, Asylum& asylum, bool& canInteract)
+{
+	Room& room = asylum.GetRoom(player.GetRow(), player.GetCol());
+
+	if (!room.HasItems())
+	{
+		std::cout << "\nThere's nothing left to interact with here.\n";
+		canInteract = false;
+		return;
+	}
+
+	std::vector<Item>& items = room.GetItems();
+
+	std::cout << "\nWhich item would you like to pick up?\n";
+	for (size_t i = 0; i < items.size(); i++)
+	{
+		std::cout << i << ": " << items[i].GetName() << "\n";
+	}
+
+	int index = Helper::GetValidIndex(static_cast<int>(items.size()));
+
+	Item chosen = items[index];
+	player.AddItem(chosen);
+
+	std::cout << "\nYou picked up: " << chosen.GetName() << "\n";
+	std::cout << chosen.GetDescription() << "\n";
+
+	if (chosen.GetEffect() == ItemEffect::SanityBoost)
+	{
+		player.SetSanity(player.GetSanity() + chosen.GetValue());
+		std::cout << "Your sanity improves slightly. (+" << chosen.GetValue() << " Sanity)\n";
+	}
+	else if (chosen.GetEffect() == ItemEffect::SanityDrain)
+	{
+		player.SetSanity(player.GetSanity() - chosen.GetValue());
+		std::cout << "Reading it leaves you shaken. (-" << chosen.GetValue() << " Sanity)\n";
+	}
+
+	room.RemoveItem(chosen.GetName());
+
+	canInteract = room.HasItems();
 }

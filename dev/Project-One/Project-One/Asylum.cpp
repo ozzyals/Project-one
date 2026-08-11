@@ -89,4 +89,12 @@ void Asylum::BuildLayout()
 
 	// Entrance, where the player enters
 	grid[4][2] = Room("Entrance Hall", "A dim, dust-covered hall. The air is still. This is where you entered.");
+
+	grid[0][1].AddItem(Item("Patient File", "A file detailing a former patient's slow decline. Reading it unsettles you.", ItemEffect::SanityDrain, 10));
+grid[0][0].AddItem(Item("Sedative", "A vial of clear liquid. Might help calm your nerves.", ItemEffect::SanityBoost, 15));
+grid[0][4].AddItem(Item("Pill Bottle", "Half-empty, label worn away.", ItemEffect::SanityBoost, 10));
+grid[4][0].AddItem(Item("Old Journal", "Someone's handwriting fills the pages, growing more frantic near the end.", ItemEffect::SanityDrain, 15));
+grid[0][3].AddItem(Item("Rusted Key", "A heavy iron key, caked in rust.", ItemEffect::Key, 0));
+
+
 }
