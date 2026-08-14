@@ -74,6 +74,7 @@ void Asylum::BuildLayout()
 	grid[3][0] = Room("Chapel", "Rows of splintered pews face a cracked stained-glass window. It's unnervingly quiet here.");
 	grid[4][0] = Room("Library", "Towering shelves lean at odd angles. Most of the books have long since rotted away.");
 	grid[4][4] = Room("Surgical Ward", "A single operating table sits under a broken light fixture. You don't linger.");
+	grid[4][2] = Room("Entrance Hall", "A dim, dust-covered hall. The air is still. This is where you entered.");
 
 	// Hallways - same purpose, different flavor text
 	grid[1][0] = Room("Corridor", "The wallpaper here has curled away from the plaster in long, brittle strips.");
@@ -91,11 +92,11 @@ void Asylum::BuildLayout()
 	grid[4][2] = Room("Entrance Hall", "A dim, dust-covered hall. The air is still. This is where you entered.");
 
 	grid[0][1].AddItem(Item("Patient File", "A file detailing a former patient's slow decline. Reading it unsettles you.", ItemEffect::SanityDrain, 10));
-grid[0][0].AddItem(Item("Sedative", "A vial of clear liquid. Might help calm your nerves.", ItemEffect::SanityBoost, 15));
-grid[0][4].AddItem(Item("Pill Bottle", "Half-empty, label worn away.", ItemEffect::SanityBoost, 10));
-grid[4][0].AddItem(Item("Old Journal", "Someone's handwriting fills the pages, growing more frantic near the end.", ItemEffect::SanityDrain, 15));
-grid[0][3].AddItem(Item("Rusted Key", "A heavy iron key, caked in rust.", ItemEffect::Key, 0));
-
+	grid[0][0].AddItem(Item("Sedative", "A vial of clear liquid. Might help calm your nerves.", ItemEffect::SanityBoost, 15));
+	grid[0][4].AddItem(Item("Pill Bottle", "Half-empty, label worn away.", ItemEffect::SanityBoost, 10));
+	grid[4][0].AddItem(Item("Old Journal", "Someone's handwriting fills the pages, growing more frantic near the end.", ItemEffect::SanityDrain, 15));
+	grid[0][3].AddItem(Item("Rusted Key", "A heavy iron key, caked in rust.", ItemEffect::Key, 0));
+	grid[4][2].AddItem(Item("Front Door", "The heavy door you first came through. It's shut tight.", ItemEffect::None, 0));
 
 }
 

@@ -7,13 +7,14 @@
 #include "Player.h"
 #include "Asylum.h"
 #include "Room.h"
+#include "GameEndings.h"
 
 // Forward declarations
 void Move(Player& player, Asylum& asylum);
 void LookAround(Player& player, Asylum& asylum, bool& canInteract);
 void CheckInventory(Player& player);
 void CheckStats(Player& player);
-void Interact(Player& player, Asylum& asylum, bool& canInteract);
+void Interact(Player& player, Asylum& asylum, bool& canInteract, bool& running);
 
 int main()
 {
@@ -153,8 +154,17 @@ int main()
 		case 1:
 			Move(player, asylum);
 			canInteract = false;
-			//Temporary for easier testing automatically looks around room when moving 
-			LookAround(player, asylum, canInteract);
+
+			if (GameEndings::CheckSanityLoss(player))
+			{
+				running = false;
+			}
+			else
+			{
+				LookAround(player, asylum, canInteract);
+				asylum.PrintMap(player.GetRow(), player.GetCol());
+			}
+
 			break;
 		case 2:
 			LookAround(player, asylum, canInteract);
@@ -169,7 +179,7 @@ int main()
 			asylum.PrintMap(player.GetRow(), player.GetCol());
 			break;
 		case 6:
-			Interact(player, asylum, canInteract);
+			Interact(player, asylum, canInteract, running);
 			break;
 		case 0:
 			running = false;
@@ -178,7 +188,7 @@ int main()
 	}
 
 	std::cout << "\nThanks for playing.\n";
-
+	
 	return 0;
 	
 }
@@ -270,7 +280,7 @@ void CheckStats(Player& player)
 	std::cout << "Sanity: " << player.GetSanity() << "\n";
 }
 
-void Interact(Player& player, Asylum& asylum, bool& canInteract)
+void Interact(Player& player, Asylum& asylum, bool& canInteract, bool& running)
 {
 	Room& room = asylum.GetRoom(player.GetRow(), player.GetCol());
 
@@ -283,7 +293,7 @@ void Interact(Player& player, Asylum& asylum, bool& canInteract)
 
 	std::vector<Item>& items = room.GetItems();
 
-	std::cout << "\nWhich item would you like to pick up?\n";
+	std::cout << "\nWhich item would you like to interact with?\n";
 	for (size_t i = 0; i < items.size(); i++)
 	{
 		std::cout << i << ": " << items[i].GetName() << "\n";
@@ -292,6 +302,22 @@ void Interact(Player& player, Asylum& asylum, bool& canInteract)
 	int index = Helper::GetValidIndex(static_cast<int>(items.size()));
 
 	Item chosen = items[index];
+
+	if (chosen.GetName() == "Front Door")
+	{
+		if (!player.HasItem("Rusted Key"))
+		{
+			std::cout << "\nThe door is locked shut. Despite your best efforts to\n";
+			std::cout << "open it, the door does not budge.\n";
+			return;
+		}
+
+		if (GameEndings::CheckDoorEnding(player, asylum))
+			running = false;
+
+		return;
+	}
+
 	player.AddItem(chosen);
 
 	std::cout << "\nYou picked up: " << chosen.GetName() << "\n";
