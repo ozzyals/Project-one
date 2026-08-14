@@ -11,6 +11,6 @@ public:
 
 private:
 	static void PrintLossEnding();
-	static void PrintBittersweetEnding();
+	static void PrintFalseEnding();
 	static void PrintTrueEnding();
 };

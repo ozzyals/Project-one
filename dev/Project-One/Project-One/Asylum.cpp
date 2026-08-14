@@ -88,16 +88,106 @@ void Asylum::BuildLayout()
 	grid[3][3] = Room("Corridor", "A cold draft moves through the hall, though you can't find its source.");
 	grid[3][4] = Room("Corridor", "Old gurney tracks are worn into the floor, leading off in both directions.");
 
-	// Entrance, where the player enters
-	grid[4][2] = Room("Entrance Hall", "A dim, dust-covered hall. The air is still. This is where you entered.");
+	//items
+	grid[0][1].AddItem(Item("Patient File",
+		"The file is thick enough to strain the folder. Several pages have \n"
+		"been replaced, their edges cut cleanly from the binding. The earliest \n"
+		"notes are ordinary: insomnia, anxiety, difficulty concentrating. \n"
+		"Nothing unusual. Nothing that explains why the patient was sent here. \n\n"
 
-	grid[0][1].AddItem(Item("Patient File", "A file detailing a former patient's slow decline. Reading it unsettles you.", ItemEffect::SanityDrain, 10));
+		"Three months later, the language changes. 'Agitation.' 'Paranoia.' \n"
+		"'Fixation on matters outside the patient's concern.' The notes become \n"
+		"shorter as the treatment becomes harsher. Sedation increased. \n"
+		"Isolation extended. Visitors prohibited. Correspondence restricted. \n\n"
+
+		"One page contains a list of questions the patient repeatedly asked: \n"
+		"Who authorized the transfers? Where did the money go? Why were the \n"
+		"names removed from the records? Beside each question, someone has \n"
+		"written the same word in red ink: 'Delusion.' \n\n"
+
+		"The procedure log continues for several pages. Some entries have \n"
+		"dates but no explanation. Others have explanations but no signature. \n"
+		"Several signatures appear to belong to the same person, though the \n"
+		"names are different. \n\n"
+
+		"Near the back of the file, a typed memorandum has been folded in \n"
+		"half. It contains no diagnosis. No treatment plan. Only an order \n"
+		"to maintain the patient's confinement until further notice. \n\n"
+
+		"The final medical assessment is remarkably brief. \n\n"
+
+		"'Patient demonstrates improved compliance. Resistant beliefs no \n"
+		"longer expressed. Continued observation unnecessary.' \n\n"
+
+		"Below it, written by hand in a different ink: \n\n"
+
+		"'Do not release.'\n",
+		ItemEffect::None, 0));
 	grid[0][0].AddItem(Item("Sedative", "A vial of clear liquid. Might help calm your nerves.", ItemEffect::SanityBoost, 15));
 	grid[0][4].AddItem(Item("Pill Bottle", "Half-empty, label worn away.", ItemEffect::SanityBoost, 10));
-	grid[4][0].AddItem(Item("Old Journal", "Someone's handwriting fills the pages, growing more frantic near the end.", ItemEffect::SanityDrain, 15));
+	grid[4][0].AddItem(Item("Old Journal",
+		"The journal is small enough to fit inside a coat pocket. The first \n"
+		"pages are ordinary. Medication rounds. Broken lamps. Arguments over \n"
+		"shift changes. Complaints about the heating. Names of patients who \n"
+		"have since disappeared from the records. \n\n"
+
+		"Then the handwriting changes. \n"
+
+		"'Patient in 14B keeps asking about the same thing. Not the usual \n"
+		"questions. Names. Dates. Payments. He says someone altered the \n"
+		"admission records.' \n\n"
+
+		"A few pages later: \n"
+
+		"'I checked. I shouldn't have. There are records missing from the \n"
+		"filing room. Not misplaced. Removed.' \n\n"
+
+		"The next entry has been written so hard that the pen has torn the \n"
+		"paper. \n\n"
+
+		"'The order for his admission didn't come from a doctor.' \n\n"
+
+		"Several lines have been crossed out. One remains visible beneath \n"
+		"them: 'It came from the mayor's office.' \n\n"
+
+		"The following pages are dated several weeks apart. The nurse writes \n"
+		"about medications she was told to administer, procedures she was \n"
+		"told not to question, and visitors who never sign the visitor log. \n"
+		"She begins referring to the patient simply as '14B.' \n\n"
+
+		"Then: \n\n"
+
+		"'I found the records he was talking about. Payments from the city. \n"
+		"Contracts awarded to companies that don't exist. Names appearing \n"
+		"in three places when they should appear in one. Money disappearing \n"
+		"between offices.' \n\n"
+
+		"The handwriting becomes smaller after that. \n\n"
+
+		"'He wasn't imagining it.' \n\n"
+
+		"A final entry begins several days later. \n\n"
+
+		"'They know I looked. Dr. Vale told me to forget what I found. \n"
+		"He said the patient was dangerous because he couldn't stop \n"
+		"telling the truth. I asked him what that made us.' \n\n"
+
+		"The rest of the page is blank. \n\n"
+
+		"On the last page, written almost illegibly: \n\n"
+
+		"'They are moving him tonight. I don't know where. I hid the \n"
+		"copies in the records room. If anyone finds this, please understand \n"
+		"that he was never sick. They needed him to look sick because'\n\n"
+		"The last mark trails off the page.\n",
+		ItemEffect::None, 0));
 	grid[0][3].AddItem(Item("Rusted Key", "A heavy iron key, caked in rust.", ItemEffect::Key, 0));
 	grid[4][2].AddItem(Item("Front Door", "The heavy door you first came through. It's shut tight.", ItemEffect::None, 0));
+	grid[4][4].AddItem(Item("Scalpel", "A surgical blade, still gleaming despite the dust.", ItemEffect::SanityDrain, 20));
 
+	//sanity drain
+	grid[0][0].SetEntrySanityCost(8);  // Padded Cell
+	grid[4][4].SetEntrySanityCost(10); // Surgical Ward
 }
 
 

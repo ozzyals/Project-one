@@ -6,6 +6,7 @@ Room::Room()
 	description = "";
 	explored = false;
 	blocked = false;
+	entrySanityCost = 0;
 }
 
 Room::Room(const std::string& _name, const std::string& _description)
@@ -14,6 +15,7 @@ Room::Room(const std::string& _name, const std::string& _description)
 	description = _description;
 	explored = false;
 	blocked = false;
+	entrySanityCost = 0;
 }
 
 bool Room::IsBlocked() const
@@ -71,4 +73,14 @@ void Room::RemoveItem(const std::string& itemName)
 bool Room::HasItems() const
 {
 	return !items.empty();
+}
+
+int Room::GetEntrySanityCost() const
+{
+	return entrySanityCost;
+}
+
+void Room::SetEntrySanityCost(int cost)
+{
+	entrySanityCost = cost;
 }

@@ -223,7 +223,17 @@ void Move(Player& player, Asylum& asylum)
 	}
 
 	player.SetPosition(row, col);
+	player.SetSanity(player.GetSanity() - 2);
+
+	Room& newRoom = asylum.GetRoom(row, col);
+	if (newRoom.GetEntrySanityCost() > 0)
+	{
+		player.SetSanity(player.GetSanity() - newRoom.GetEntrySanityCost());
+		std::cout << "\nSomething about this place unsettles you.\n";
+	}
+	
 	std::cout << "You move into " << asylum.GetRoom(row, col).GetName() << ".\n";
+	std::cout << "(-2 Sanity)\n";
 }
 
 void LookAround(Player& player, Asylum& asylum, bool& canInteract)
@@ -331,7 +341,55 @@ void Interact(Player& player, Asylum& asylum, bool& canInteract, bool& running)
 	else if (chosen.GetEffect() == ItemEffect::SanityDrain)
 	{
 		player.SetSanity(player.GetSanity() - chosen.GetValue());
-		std::cout << "Reading it leaves you shaken. (-" << chosen.GetValue() << " Sanity)\n";
+
+		if (chosen.GetName() == "Scalpel")
+		{
+			std::cout << "\nYour fingers close around the handle.\n";
+			std::cout << "For a moment, the surgical ward disappears.\n\n";
+
+			std::cout << "White walls.\n";
+			std::cout << "A light above you, painfully bright.\n";
+			std::cout << "Something is strapped across your chest.\n\n";
+
+			std::cout << "You try to move.\n";
+			std::cout << "You can't.\n\n";
+
+			std::cout << "Someone stands beside you. You can't see their face.\n";
+			std::cout << "\"Hold still.\"\n\n";
+
+			std::cout << "The words sound familiar.\n";
+			std::cout << "Not because you've heard them before.\n";
+			std::cout << "Because you've been here before.\n\n";
+
+			std::cout << "You look down.\n";
+			std::cout << "A hand is resting beside you.\n";
+			std::cout << "Your hand.\n\n";
+
+			std::cout << "It is holding a scalpel.\n\n";
+
+			std::cout << "You try to scream.\n";
+			std::cout << "The hand moves.\n\n";
+
+			std::cout << "You blink.\n\n";
+
+			std::cout << "The surgical ward is back.\n";
+			std::cout << "You are standing where you were.\n";
+			std::cout << "The scalpel is on the floor.\n\n";
+
+			std::cout << "You stare at your wrist.\n";
+			std::cout << "There is no wound. No blood. Nothing.\n\n";
+
+			std::cout << "But your wrist aches as though something happened to it.\n\n";
+
+			std::cout << "For several seconds, you cannot remember which room you\n";
+			std::cout << "were standing in before the white walls appeared.\n";
+		}
+		else
+		{
+			std::cout << "Reading it leaves you shaken.\n";
+		}
+
+		std::cout << "(-" << chosen.GetValue() << " Sanity)\n";
 	}
 
 	room.RemoveItem(chosen.GetName());
