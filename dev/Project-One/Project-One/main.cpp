@@ -134,16 +134,17 @@ int main()
 		std::cout << "2. Look Around\n";
 		std::cout << "3. Check Inventory\n";
 		std::cout << "4. Check Stats\n";
+		std::cout << "5. View Map\n";
 		
 		if (canInteract)
-			std::cout << "5. Interact\n";
+			std::cout << "6. Interact\n";
 		
 		std::cout << "0. Quit\n";
 		std::cout << "Enter choice: ";
 
-		std::vector<int> validChoices = { 0, 1, 2, 3, 4 };
+		std::vector<int> validChoices = { 0, 1, 2, 3, 4, 5 };
 		if (canInteract)
-			validChoices.push_back(5);
+			validChoices.push_back(6);
 
 		int choice = Helper::GetMenuChoice(validChoices);
 
@@ -165,6 +166,9 @@ int main()
 			CheckStats(player);
 			break;
 		case 5:
+			asylum.PrintMap(player.GetRow(), player.GetCol());
+			break;
+		case 6:
 			Interact(player, asylum, canInteract);
 			break;
 		case 0:

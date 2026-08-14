@@ -98,3 +98,53 @@ grid[0][3].AddItem(Item("Rusted Key", "A heavy iron key, caked in rust.", ItemEf
 
 
 }
+
+
+void Asylum::PrintMap(int playerRow, int playerCol)
+{
+	std::cout << "\n--- Map ---\n\n";
+
+	const int cellWidth = 16;
+
+	for (int r = 0; r < height; r++)
+	{
+		for (int c = 0; c < width; c++)
+		{
+			bool adjacentExplored = false;
+
+			if (r > 0 && grid[r - 1][c].IsExplored()) adjacentExplored = true;
+			if (r < height - 1 && grid[r + 1][c].IsExplored()) adjacentExplored = true;
+			if (c > 0 && grid[r][c - 1].IsExplored()) adjacentExplored = true;
+			if (c < width - 1 && grid[r][c + 1].IsExplored()) adjacentExplored = true;
+
+			std::string label;
+
+			if (r == playerRow && c == playerCol)
+			{
+				label = "[YOU]";
+			}
+			else if (grid[r][c].IsBlocked())
+			{
+				label = adjacentExplored ? "Wall" : "???";
+			}
+			else if (grid[r][c].IsExplored())
+			{
+				label = grid[r][c].GetName();
+			}
+			else
+			{
+				label = "???";
+			}
+
+			if (label.length() > cellWidth - 1)
+				label = label.substr(0, cellWidth - 1);
+
+			std::cout << label;
+			for (size_t pad = label.length(); pad < cellWidth; pad++)
+				std::cout << " ";
+		}
+		std::cout << "\n\n";
+	}
+
+	std::cout << "[YOU] = Your location    ??? = Unexplored\n";
+}
