@@ -10,7 +10,7 @@
 #include "GameEndings.h"
 
 // Forward declarations
-void Move(Player& player, Asylum& asylum);
+void Move(Player& player, Asylum& asylum, char direction);
 void LookAround(Player& player, Asylum& asylum, bool& canInteract);
 void CheckInventory(Player& player);
 void CheckStats(Player& player);
@@ -130,29 +130,36 @@ int main()
 
 	while (running)
 	{
-		std::cout << "\n--- What would you like to do? ---\n";
-		std::cout << "1. Move\n";
-		std::cout << "2. Look Around\n";
-		std::cout << "3. Check Inventory\n";
-		std::cout << "4. Check Stats\n";
-		std::cout << "5. View Map\n";
+		std::cout << "\n--- What would you like to do? ---\n\n";
+		std::cout << "W. Move North\n";
+		std::cout << "S. Move South\n";
+		std::cout << "A. Move West\n";
+		std::cout << "D. Move East\n";
+		//std::cout << "2. Look Around\n";
+		std::cout << "1. Check Inventory\n";
+		std::cout << "2. Check Stats\n";
+		//std::cout << "5. View Map\n";
 		
 		if (canInteract)
-			std::cout << "6. Interact\n";
+			std::cout << "3. Interact\n";
 		
 		std::cout << "0. Quit\n";
 		std::cout << "Enter choice: ";
 
-		std::vector<int> validChoices = { 0, 1, 2, 3, 4, 5 };
-		if (canInteract)
-			validChoices.push_back(6);
+		std::string input;
+		std::cin >> input;
 
-		int choice = Helper::GetMenuChoice(validChoices);
-
-		switch (choice)
+		if (input.length() != 1)
 		{
-		case 1:
-			Move(player, asylum);
+			std::cout << "Invalid choice, please try again.\n";
+			continue;
+		}
+
+		char choice = std::toupper(input[0]);
+
+		if (choice == 'W' || choice == 'A' || choice == 'S' || choice == 'D')
+		{
+			Move(player, asylum, choice);
 			canInteract = false;
 
 			if (GameEndings::CheckSanityLoss(player))
@@ -164,26 +171,34 @@ int main()
 				LookAround(player, asylum, canInteract);
 				asylum.PrintMap(player.GetRow(), player.GetCol());
 			}
-
-			break;
-		case 2:
-			LookAround(player, asylum, canInteract);
-			break;
-		case 3:
+		}
+		//else if (choice == '2')
+		//{
+			//LookAround(player, asylum, canInteract);
+		//}
+		else if (choice == '1')
+		{
 			CheckInventory(player);
-			break;
-		case 4:
+		}
+		else if (choice == '2')
+		{
 			CheckStats(player);
-			break;
-		case 5:
-			asylum.PrintMap(player.GetRow(), player.GetCol());
-			break;
-		case 6:
+		}
+		//else if (choice == '5')
+		//{
+			//asylum.PrintMap(player.GetRow(), player.GetCol());
+		//}
+		else if (choice == '3' && canInteract)
+		{
 			Interact(player, asylum, canInteract, running);
-			break;
-		case 0:
+		}
+		else if (choice == '0')
+		{
 			running = false;
-			break;
+		}
+		else
+		{
+			std::cout << "Invalid choice, please try again.\n";
 		}
 	}
 
@@ -193,32 +208,23 @@ int main()
 	
 }
 
-void Move(Player& player, Asylum& asylum)
+void Move(Player& player, Asylum& asylum, char direction)
 {
-	std::cout << "\nWhich direction? (N/S/E/W): ";
-	char direction;
-	std::cin >> direction;
-
 	int row = player.GetRow();
 	int col = player.GetCol();
 
-	if (direction == 'N' || direction == 'n')
+	if (direction == 'W')
 		row--;
-	else if (direction == 'S' || direction == 's')
+	else if (direction == 'S')
 		row++;
-	else if (direction == 'E' || direction == 'e')
-		col++;
-	else if (direction == 'W' || direction == 'w')
+	else if (direction == 'A')
 		col--;
-	else
-	{
-		std::cout << "Invalid direction.\n";
-		return;
-	}
+	else if (direction == 'D')
+		col++;
 
 	if (!asylum.IsValidPosition(row, col))
 	{
-		std::cout << "You can't go that way.\n";
+		std::cout << "\nYou can't go that way.\n";
 		return;
 	}
 
@@ -231,8 +237,8 @@ void Move(Player& player, Asylum& asylum)
 		player.SetSanity(player.GetSanity() - newRoom.GetEntrySanityCost());
 		std::cout << "\nSomething about this place unsettles you.\n";
 	}
-	
-	std::cout << "You move into " << asylum.GetRoom(row, col).GetName() << ".\n";
+
+	std::cout << "\nYou move into " << newRoom.GetName() << ".\n";
 	std::cout << "(-2 Sanity)\n";
 }
 
