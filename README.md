@@ -35,7 +35,21 @@ My next step is to add Items to the rooms. The next point of focus will be plann
 
 ### Week 2
 
-My next stand up will go here...
+⚙️ Overview – What did you work on this past week?
+
+This week I really focused on getting everything the game has to have working functioning. I got items working early on which mostly had my prototype working. I felt the game needed a graphical map so the player could visualize where they were and where they had been. The game also needed a way to win or lose. Additionally the narrative adventure needed narrative so i spent a good amount of time updating some of the more important item descriptions and the ending messages. 
+
+🌵 Challenges – What obstacles did you encounter, and how are you addressing them?
+
+The biggest issue this week was time. I missed out on being able to work on it Thursday and I don't usually get much done on Mondays. I got some big stuff done early in the week and I did a ton of work on the game Friday. I started with the stuff that really had to be done to be a complete prototype first and then worked on the stuff that was more interesting last. That way if I ran out of time I would have still been in an ok position. 
+
+🏆 Accomplishments – What is something you learned, improved, or "leveled up" on this week?
+
+I think I leveled up my debugging skills this week. I hit a few errors this week but nothing got me stuck the way it did in earlier courses.
+
+🔮 Next Steps – What do you plan to prioritize before Week 3?
+
+Going into week three I want to make the game better to look at. ASCII art Different color txt, clear screen, are all featured that desperately need to be added but i couldn't justify spending time on until the game was in a playable state.
 
 ### Week 3
 
