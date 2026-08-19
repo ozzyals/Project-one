@@ -127,6 +127,7 @@ int main()
 
 	//might replace with difrent initial description
 	LookAround(player, asylum, canInteract);
+	asylum.PrintMap(player.GetRow(), player.GetCol());
 
 	while (running)
 	{
@@ -151,7 +152,10 @@ int main()
 
 		if (input.length() != 1)
 		{
+			Helper::ClearConsol();
 			std::cout << "Invalid choice, please try again.\n";
+			LookAround(player, asylum, canInteract);
+			asylum.PrintMap(player.GetRow(), player.GetCol());
 			continue;
 		}
 
@@ -159,6 +163,7 @@ int main()
 
 		if (choice == 'W' || choice == 'A' || choice == 'S' || choice == 'D')
 		{
+			Helper::ClearConsol();
 			Move(player, asylum, choice);
 			canInteract = false;
 
@@ -172,25 +177,29 @@ int main()
 				asylum.PrintMap(player.GetRow(), player.GetCol());
 			}
 		}
-		//else if (choice == '2')
-		//{
-			//LookAround(player, asylum, canInteract);
-		//}
+	
 		else if (choice == '1')
 		{
 			CheckInventory(player);
+			LookAround(player, asylum, canInteract);
+			asylum.PrintMap(player.GetRow(), player.GetCol());
 		}
 		else if (choice == '2')
 		{
 			CheckStats(player);
+			LookAround(player, asylum, canInteract);
+			asylum.PrintMap(player.GetRow(), player.GetCol());
 		}
-		//else if (choice == '5')
-		//{
-			//asylum.PrintMap(player.GetRow(), player.GetCol());
-		//}
+		
 		else if (choice == '3' && canInteract)
 		{
 			Interact(player, asylum, canInteract, running);
+
+			if (running)
+			{
+				LookAround(player, asylum, canInteract);
+				asylum.PrintMap(player.GetRow(), player.GetCol());
+			}
 		}
 		else if (choice == '0')
 		{
@@ -198,7 +207,10 @@ int main()
 		}
 		else
 		{
+			Helper::ClearConsol();
 			std::cout << "Invalid choice, please try again.\n";
+			LookAround(player, asylum, canInteract);
+			asylum.PrintMap(player.GetRow(), player.GetCol());
 		}
 	}
 
@@ -276,7 +288,9 @@ void LookAround(Player& player, Asylum& asylum, bool& canInteract)
 
 void CheckInventory(Player& player)
 {
+	Helper::ClearConsol();
 	std::cout << "\n--- Inventory ---\n";
+	
 
 	if (player.GetInventory().empty())
 	{
@@ -292,6 +306,7 @@ void CheckInventory(Player& player)
 
 void CheckStats(Player& player)
 {
+	Helper::ClearConsol();
 	std::cout << "\n--- Stats ---\n";
 	std::cout << "Sanity: " << player.GetSanity() << "\n";
 }
@@ -310,13 +325,23 @@ void Interact(Player& player, Asylum& asylum, bool& canInteract, bool& running)
 	std::vector<Item>& items = room.GetItems();
 
 	std::cout << "\nWhich item would you like to interact with?\n";
+	std::cout << "0: Cancel\n";
 	for (size_t i = 0; i < items.size(); i++)
 	{
-		std::cout << i << ": " << items[i].GetName() << "\n";
+		std::cout << (i + 1) << ": " << items[i].GetName() << "\n";
 	}
 
-	int index = Helper::GetValidIndex(static_cast<int>(items.size()));
+	int choice = Helper::GetValidIndex(static_cast<int>(items.size()) + 1);
 
+	Helper::ClearConsol();
+
+	if (choice == 0)
+	{
+		std::cout << "\nNever mind.\n";
+		return;
+	}
+
+	int index = choice - 1;
 	Item chosen = items[index];
 
 	if (chosen.GetName() == "Front Door")
