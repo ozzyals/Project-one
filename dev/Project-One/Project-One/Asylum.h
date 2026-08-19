@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "Room.h"
+#include <iostream>
 
 class Asylum
 {
@@ -14,6 +15,7 @@ public:
 	int GetHeight() const;
 	bool IsValidPosition(int row, int col) const;
 	void BuildLayout();
+	void PrintMap(int playerRow, int playerCol);
 
 private:
 	std::vector<std::vector<Room>> grid;

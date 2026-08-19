@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <vector>
 #include <cstdlib>
+#include <string>
+
 namespace Helper {
 	
 	static bool IsInteger(const char* input) {
@@ -96,4 +98,37 @@ namespace Helper {
 		return value;
 	}
 
+	static int GetValidIndex(int max) {
+		std::string input;
+		int value = 0;
+		bool valid = false;
+
+		while (!valid)
+		{
+			std::cout << "Enter an index (0 to " << max - 1 << "): ";
+			std::cin >> input;
+
+			if (IsInteger(input.c_str()))
+			{
+				value = std::stoi(input);
+
+				if (value >= 0 && value < max)
+				{
+					valid = true;
+				}
+				else
+				{
+					std::cout << "Index out of range.\n";
+				}
+			}
+			else
+			{
+				std::cout << "That's not a valid integer.\n";
+			}
+		}
+
+		return value;
+	}
+
 }
+

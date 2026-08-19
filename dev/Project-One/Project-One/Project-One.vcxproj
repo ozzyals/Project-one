@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Asylum.cpp" />
+    <ClCompile Include="GameEndings.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -147,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Asylum.h" />
+    <ClInclude Include="GameEndings.h" />
     <ClInclude Include="Helper.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Player.h" />

@@ -9,6 +9,7 @@ class Player
 public:
 	Player();
 	Player(const std::string& _name, int _sanity);
+	bool HasItem(const std::string& itemName) const;
 
 	std::string GetName() const;
 	int GetSanity() const;

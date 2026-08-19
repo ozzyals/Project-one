@@ -17,6 +17,8 @@ public:
 
 	bool IsBlocked() const;
 	void SetBlocked(bool _blocked);
+	int GetEntrySanityCost() const;
+	void SetEntrySanityCost(int cost);
 
 	void SetExplored(bool _explored);
 	void AddItem(const Item& item);
@@ -29,4 +31,5 @@ private:
 	std::vector<Item> items;
 	bool explored;
 	bool blocked;
+	int entrySanityCost;
 };

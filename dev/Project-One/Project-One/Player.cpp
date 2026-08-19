@@ -56,3 +56,13 @@ void Player::AddItem(const Item& item)
 {
 	inventory.push_back(item);
 }
+
+bool Player::HasItem(const std::string& itemName) const
+{
+	for (const Item& item : inventory)
+	{
+		if (item.GetName() == itemName)
+			return true;
+	}
+	return false;
+}
