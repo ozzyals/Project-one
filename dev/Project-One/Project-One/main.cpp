@@ -148,7 +148,7 @@ int main()
 		std::cout << "Enter choice: ";
 
 		std::string input;
-		std::cin >> input;
+		std::getline(std::cin, input);
 
 		if (input.length() != 1)
 		{
