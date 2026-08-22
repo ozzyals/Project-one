@@ -10,12 +10,13 @@
 #include "GameEndings.h"
 
 // Forward declarations
-void Move(Player& player, Asylum& asylum, char direction);
+void Move(Player& player, Asylum& asylum, char direction, bool& canInteract, bool& running);
 void LookAround(Player& player, Asylum& asylum, bool& canInteract);
-void CheckInventory(Player& player);
-void CheckStats(Player& player);
+void CheckInventory(Player& player, Asylum& asylum, bool& canInteract);
+void CheckStats(Player& player, Asylum& asylum, bool& canInteract);
 void Interact(Player& player, Asylum& asylum, bool& canInteract, bool& running);
 
+//Opening screen
 int main()
 {
 	std::cout << R"(		 __      __       .__                                  __               
@@ -94,7 +95,26 @@ int main()
 	std::cout << "\n";
 
     
+	// Initial Description
+	
 
+	//Player stats and map size
+	Player player("Survivor", 100);
+	Asylum asylum(5, 5);
+	asylum.BuildLayout();
+
+	//Starting room
+	asylum.GetRoom(4, 2);
+	player.SetPosition(4, 2);
+
+	bool running = true;
+	bool canInteract = false;
+
+	
+	asylum.PrintMap(player.GetRow(), player.GetCol());
+	LookAround(player, asylum, canInteract);
+
+	// Initial Description
 	std::cout << "\n";
 	std::cout << "===================================\n";
 	std::cout << "         FALL SHELL ASYLUM\n";
@@ -111,23 +131,10 @@ int main()
 
 	std::cout << "Find a way out of Fall Shell Asylum before it's too late.\n";
 	std::cout << "Your Health and Sanity will guide how far you can go.\n\n";
-	//std::cout << "Press Enter to Continue.\n\n";
+
 
 	std::cout << "===================================\n\n";
 
-	Player player("Survivor", 100);
-	Asylum asylum(5, 5);
-	asylum.BuildLayout();
-
-	asylum.GetRoom(4, 2);
-	player.SetPosition(4, 2);
-
-	bool running = true;
-	bool canInteract = false;
-
-	//might replace with difrent initial description
-	LookAround(player, asylum, canInteract);
-	asylum.PrintMap(player.GetRow(), player.GetCol());
 
 	while (running)
 	{
@@ -136,10 +143,9 @@ int main()
 		std::cout << "S. Move South\n";
 		std::cout << "A. Move West\n";
 		std::cout << "D. Move East\n";
-		//std::cout << "2. Look Around\n";
 		std::cout << "1. Check Inventory\n";
 		std::cout << "2. Check Stats\n";
-		//std::cout << "5. View Map\n";
+		
 		
 		if (canInteract)
 			std::cout << "3. Interact\n";
@@ -153,9 +159,9 @@ int main()
 		if (input.length() != 1)
 		{
 			Helper::ClearConsol();
-			std::cout << "Invalid choice, please try again.\n";
-			LookAround(player, asylum, canInteract);
 			asylum.PrintMap(player.GetRow(), player.GetCol());
+			LookAround(player, asylum, canInteract);
+			std::cout << "\nInvalid choice, please try again.\n";
 			continue;
 		}
 
@@ -164,42 +170,29 @@ int main()
 		if (choice == 'W' || choice == 'A' || choice == 'S' || choice == 'D')
 		{
 			Helper::ClearConsol();
-			Move(player, asylum, choice);
-			canInteract = false;
-
-			if (GameEndings::CheckSanityLoss(player))
-			{
-				running = false;
-			}
-			else
-			{
-				LookAround(player, asylum, canInteract);
-				asylum.PrintMap(player.GetRow(), player.GetCol());
-			}
+			Move(player, asylum, choice, canInteract, running);
+			
 		}
 	
 		else if (choice == '1')
 		{
-			CheckInventory(player);
-			LookAround(player, asylum, canInteract);
-			asylum.PrintMap(player.GetRow(), player.GetCol());
+			CheckInventory(player, asylum, canInteract);
+			//LookAround(player, asylum, canInteract);
+			//asylum.PrintMap(player.GetRow(), player.GetCol());
+			
 		}
 		else if (choice == '2')
 		{
-			CheckStats(player);
-			LookAround(player, asylum, canInteract);
-			asylum.PrintMap(player.GetRow(), player.GetCol());
+			CheckStats(player, asylum, canInteract);
+			//asylum.PrintMap(player.GetRow(), player.GetCol());
+			//LookAround(player, asylum, canInteract);
+			
 		}
 		
 		else if (choice == '3' && canInteract)
 		{
 			Interact(player, asylum, canInteract, running);
 
-			if (running)
-			{
-				LookAround(player, asylum, canInteract);
-				asylum.PrintMap(player.GetRow(), player.GetCol());
-			}
 		}
 		else if (choice == '0')
 		{
@@ -208,9 +201,10 @@ int main()
 		else
 		{
 			Helper::ClearConsol();
-			std::cout << "Invalid choice, please try again.\n";
-			LookAround(player, asylum, canInteract);
+			
 			asylum.PrintMap(player.GetRow(), player.GetCol());
+			LookAround(player, asylum, canInteract);
+			std::cout << "\nInvalid choice, please try again.\n";
 		}
 	}
 
@@ -220,7 +214,7 @@ int main()
 	
 }
 
-void Move(Player& player, Asylum& asylum, char direction)
+void Move(Player& player, Asylum& asylum, char direction, bool& canInteract, bool& running)
 {
 	int row = player.GetRow();
 	int col = player.GetCol();
@@ -236,6 +230,8 @@ void Move(Player& player, Asylum& asylum, char direction)
 
 	if (!asylum.IsValidPosition(row, col))
 	{
+		asylum.PrintMap(player.GetRow(), player.GetCol());
+		LookAround(player, asylum, canInteract);
 		std::cout << "\nYou can't go that way.\n";
 		return;
 	}
@@ -244,14 +240,33 @@ void Move(Player& player, Asylum& asylum, char direction)
 	player.SetSanity(player.GetSanity() - 2);
 
 	Room& newRoom = asylum.GetRoom(row, col);
-	if (newRoom.GetEntrySanityCost() > 0)
+	int entryCost = newRoom.GetEntrySanityCost();
+
+	if (entryCost > 0)
 	{
-		player.SetSanity(player.GetSanity() - newRoom.GetEntrySanityCost());
-		std::cout << "\nSomething about this place unsettles you.\n";
+		player.SetSanity(player.GetSanity() - entryCost);
 	}
 
-	std::cout << "\nYou move into " << newRoom.GetName() << ".\n";
-	std::cout << "(-2 Sanity)\n";
+
+	if (GameEndings::CheckSanityLoss(player))
+	{
+		running = false;
+	}
+	else
+	{
+		asylum.PrintMap(player.GetRow(), player.GetCol());
+		LookAround(player, asylum, canInteract);
+
+		std::cout << "\n" << Color::Red << "(-2 Sanity)" << Color::Reset << "\n\n";
+
+		if (entryCost > 0)
+		{
+			std::cout << Color::Red;
+			std::cout << "Something about this place unsettles you.\n";
+			std::cout << "(-" << entryCost << " Sanity)\n";
+			std::cout << Color::Reset;
+		}
+	}
 }
 
 void LookAround(Player& player, Asylum& asylum, bool& canInteract)
@@ -264,19 +279,23 @@ void LookAround(Player& player, Asylum& asylum, bool& canInteract)
 	std::cout << room.GetDescription() << "\n\n";
 	//std::cout << "[DEBUG] Grid size: " << asylum.GetWidth() << " x " << asylum.GetHeight() << "\n";
 
+	std::cout << Color::Yellow;
 	std::cout << "Exits: ";
 	if (asylum.IsValidPosition(player.GetRow() - 1, player.GetCol())) std::cout << "North ";
 	if (asylum.IsValidPosition(player.GetRow() + 1, player.GetCol())) std::cout << "South ";
 	if (asylum.IsValidPosition(player.GetRow(), player.GetCol() - 1)) std::cout << "West ";
 	if (asylum.IsValidPosition(player.GetRow(), player.GetCol() + 1)) std::cout << "East ";
 	std::cout << "\n";
+	std::cout << Color::Reset;
 
 	if (room.HasItems())
 	{
+		std::cout << Color::Yellow;
 		std::cout << "\nYou notice:\n";
 		for (Item& item : room.GetItems())
 		{
 			std::cout << " - " << item.GetName() << "\n";
+			std::cout << Color::Reset;
 		}
 		canInteract = true;
 	}
@@ -286,9 +305,14 @@ void LookAround(Player& player, Asylum& asylum, bool& canInteract)
 	}
 }
 
-void CheckInventory(Player& player)
+void CheckInventory(Player& player, Asylum& asylum, bool& canInteract)
 {
 	Helper::ClearConsol();
+
+	asylum.PrintMap(player.GetRow(), player.GetCol());
+	LookAround(player, asylum, canInteract);
+	
+
 	std::cout << "\n--- Inventory ---\n";
 	
 
@@ -304,11 +328,14 @@ void CheckInventory(Player& player)
 	}
 }
 
-void CheckStats(Player& player)
+void CheckStats(Player& player, Asylum& asylum, bool& canInteract)
 {
+
 	Helper::ClearConsol();
-	std::cout << "\n--- Stats ---\n";
-	std::cout << "Sanity: " << player.GetSanity() << "\n";
+	asylum.PrintMap(player.GetRow(), player.GetCol());
+	LookAround(player, asylum, canInteract);
+	std::cout << Color::Cyan << "\n--- Stats ---" << Color::Reset << "\n";
+	std::cout << Color::Cyan << "Sanity: " << player.GetSanity() << Color::Reset << "\n";
 }
 
 void Interact(Player& player, Asylum& asylum, bool& canInteract, bool& running)
@@ -337,6 +364,8 @@ void Interact(Player& player, Asylum& asylum, bool& canInteract, bool& running)
 
 	if (choice == 0)
 	{
+		asylum.PrintMap(player.GetRow(), player.GetCol());
+		LookAround(player, asylum, canInteract);
 		std::cout << "\nNever mind.\n";
 		return;
 	}
@@ -348,6 +377,8 @@ void Interact(Player& player, Asylum& asylum, bool& canInteract, bool& running)
 	{
 		if (!player.HasItem("Rusted Key"))
 		{
+			asylum.PrintMap(player.GetRow(), player.GetCol());
+			LookAround(player, asylum, canInteract);
 			std::cout << "\nThe door is locked shut. Despite your best efforts to\n";
 			std::cout << "open it, the door does not budge.\n";
 			return;
@@ -361,16 +392,21 @@ void Interact(Player& player, Asylum& asylum, bool& canInteract, bool& running)
 
 	player.AddItem(chosen);
 
+	asylum.PrintMap(player.GetRow(), player.GetCol());
+	LookAround(player, asylum, canInteract);
+
 	std::cout << "\nYou picked up: " << chosen.GetName() << "\n";
 	std::cout << chosen.GetDescription() << "\n";
 
 	if (chosen.GetEffect() == ItemEffect::SanityBoost)
 	{
+		
 		player.SetSanity(player.GetSanity() + chosen.GetValue());
-		std::cout << "Your sanity improves slightly. (+" << chosen.GetValue() << " Sanity)\n";
+		std::cout << Color::Green << "Your sanity improves slightly. (+" << chosen.GetValue() << " Sanity)\n" << Color::Reset;
 	}
 	else if (chosen.GetEffect() == ItemEffect::SanityDrain)
 	{
+		
 		player.SetSanity(player.GetSanity() - chosen.GetValue());
 
 		if (chosen.GetName() == "Scalpel")
@@ -419,11 +455,14 @@ void Interact(Player& player, Asylum& asylum, bool& canInteract, bool& running)
 		{
 			std::cout << "Reading it leaves you shaken.\n";
 		}
-
+		std::cout << Color::Red;
 		std::cout << "(-" << chosen.GetValue() << " Sanity)\n";
+		std::cout << Color::Reset;
 	}
 
 	room.RemoveItem(chosen.GetName());
 
 	canInteract = room.HasItems();
+
+	
 }
