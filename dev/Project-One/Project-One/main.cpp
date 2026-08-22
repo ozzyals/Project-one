@@ -247,7 +247,6 @@ void Move(Player& player, Asylum& asylum, char direction, bool& canInteract, boo
 		player.SetSanity(player.GetSanity() - entryCost);
 	}
 
-	//canInteract = false;
 
 	if (GameEndings::CheckSanityLoss(player))
 	{
@@ -258,12 +257,14 @@ void Move(Player& player, Asylum& asylum, char direction, bool& canInteract, boo
 		asylum.PrintMap(player.GetRow(), player.GetCol());
 		LookAround(player, asylum, canInteract);
 
-		std::cout << "\n(-2 Sanity)\n\n";
+		std::cout << "\n" << Color::Red << "(-2 Sanity)" << Color::Reset << "\n\n";
 
 		if (entryCost > 0)
 		{
+			std::cout << Color::Red;
 			std::cout << "Something about this place unsettles you.\n";
 			std::cout << "(-" << entryCost << " Sanity)\n";
+			std::cout << Color::Reset;
 		}
 	}
 }
@@ -278,20 +279,23 @@ void LookAround(Player& player, Asylum& asylum, bool& canInteract)
 	std::cout << room.GetDescription() << "\n\n";
 	//std::cout << "[DEBUG] Grid size: " << asylum.GetWidth() << " x " << asylum.GetHeight() << "\n";
 
+	std::cout << Color::Yellow;
 	std::cout << "Exits: ";
 	if (asylum.IsValidPosition(player.GetRow() - 1, player.GetCol())) std::cout << "North ";
 	if (asylum.IsValidPosition(player.GetRow() + 1, player.GetCol())) std::cout << "South ";
 	if (asylum.IsValidPosition(player.GetRow(), player.GetCol() - 1)) std::cout << "West ";
 	if (asylum.IsValidPosition(player.GetRow(), player.GetCol() + 1)) std::cout << "East ";
 	std::cout << "\n";
+	std::cout << Color::Reset;
 
 	if (room.HasItems())
 	{
-
+		std::cout << Color::Yellow;
 		std::cout << "\nYou notice:\n";
 		for (Item& item : room.GetItems())
 		{
 			std::cout << " - " << item.GetName() << "\n";
+			std::cout << Color::Reset;
 		}
 		canInteract = true;
 	}
@@ -330,8 +334,8 @@ void CheckStats(Player& player, Asylum& asylum, bool& canInteract)
 	Helper::ClearConsol();
 	asylum.PrintMap(player.GetRow(), player.GetCol());
 	LookAround(player, asylum, canInteract);
-	std::cout << "\n--- Stats ---\n";
-	std::cout << "Sanity: " << player.GetSanity() << "\n";
+	std::cout << Color::Cyan << "\n--- Stats ---" << Color::Reset << "\n";
+	std::cout << Color::Cyan << "Sanity: " << player.GetSanity() << Color::Reset << "\n";
 }
 
 void Interact(Player& player, Asylum& asylum, bool& canInteract, bool& running)
@@ -398,7 +402,7 @@ void Interact(Player& player, Asylum& asylum, bool& canInteract, bool& running)
 	{
 		
 		player.SetSanity(player.GetSanity() + chosen.GetValue());
-		std::cout << "Your sanity improves slightly. (+" << chosen.GetValue() << " Sanity)\n";
+		std::cout << Color::Green << "Your sanity improves slightly. (+" << chosen.GetValue() << " Sanity)\n" << Color::Reset;
 	}
 	else if (chosen.GetEffect() == ItemEffect::SanityDrain)
 	{
@@ -451,8 +455,9 @@ void Interact(Player& player, Asylum& asylum, bool& canInteract, bool& running)
 		{
 			std::cout << "Reading it leaves you shaken.\n";
 		}
-
+		std::cout << Color::Red;
 		std::cout << "(-" << chosen.GetValue() << " Sanity)\n";
+		std::cout << Color::Reset;
 	}
 
 	room.RemoveItem(chosen.GetName());

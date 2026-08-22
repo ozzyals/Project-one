@@ -1,5 +1,6 @@
 #include "GameEndings.h"
 #include <iostream>
+#include "Helper.h"
 
 bool GameEndings::CheckSanityLoss(Player& player)
 {
@@ -36,6 +37,7 @@ bool GameEndings::CheckDoorEnding(Player& player, Asylum& asylum)
 
 void GameEndings::PrintLossEnding()
 {
+	std::cout << Color::Red;
 	std::cout << "\n===================================\n";
 	std::cout << "Something inside you finally gives way.\n\n";
 
@@ -73,10 +75,12 @@ void GameEndings::PrintLossEnding()
 	std::cout << "===================================\n";
 	std::cout << "YOU LOSE.\n";
 	std::cout << "===================================\n\n";
+	std::cout << Color::Reset;
 }
 
 void GameEndings::PrintFalseEnding()
 {
+	std::cout << Color::Yellow;
 	std::cout << "\n===================================\n";
 
 	std::cout << "The key turns.\n\n";
@@ -129,10 +133,12 @@ void GameEndings::PrintFalseEnding()
 	std::cout << "===================================\n";
 	std::cout << "GAME OVER.\n";
 	std::cout << "===================================\n\n";
+	std::cout << Color::Reset;
 }
 
 void GameEndings::PrintTrueEnding()
 {
+	std::cout << Color::Green;
 	std::cout << "\n===================================\n";
 
 	std::cout << "You stand before the door with the key in your hand.\n\n";
@@ -185,4 +191,5 @@ void GameEndings::PrintTrueEnding()
 	std::cout << "===================================\n";
 	std::cout << "YOU HAVE ESCAPED FALL SHELL ASYLUM.\n";
 	std::cout << "===================================\n\n";
+	std::cout << Color::Reset;
 }
