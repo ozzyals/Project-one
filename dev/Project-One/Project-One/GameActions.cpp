@@ -57,6 +57,7 @@ void GameActions::Move(Player& player, Asylum& asylum, char direction, bool& can
 
 	if (!asylum.IsValidPosition(row, col))
 	{
+		RefreshView(player, asylum, canInteract);
 		std::cout << "\nYou can't go that way.\n";
 		return;
 	}
