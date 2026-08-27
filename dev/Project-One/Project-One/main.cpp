@@ -21,6 +21,7 @@ int main()
 	{
 		Helper::ClearConsol();
 
+		std::cout << Color::Cyan;
 	std::cout << R"(		 __      __       .__                                  __               
 		/  \    /  \ ____ |  |   ____  ____   _____   ____   _/  |_  ____       
 		\   \/\/   // __ \|  | _/ ___\/  _ \ /     \_/ __ \  \   __\/  _ \      
@@ -53,6 +54,7 @@ int main()
 			 |____|     |__|   \____/ \___  >___  >\___  >____ |  
 					              \/    \/     \/     \/                 )";
 	std::cout << "\n";
+	std::cout << Color::Reset;
 	
 	std::cin.get();
 	
@@ -82,10 +84,16 @@ int main()
 
 	// Initial Description
 	std::cout << "\n";
-	std::cout << "===================================\n";
-	std::cout << "         FALL SHELL ASYLUM\n";
-	std::cout << "===================================\n\n";
 
+	std::cout << Color::BrightCyan;
+	std::cout << "===================================\n";
+	std::cout << Color::Bold;
+	std::cout << Color::BrightYellow;
+	std::cout << "         FALL SHELL ASYLUM\n";
+	std::cout << Color::BrightCyan;
+	std::cout << "===================================\n\n";
+	
+	std::cout << Color::BrightMagenta;
 	std::cout << "You wake up on a cold concrete floor, the smell of rust and\n";
 	std::cout << "antiseptic thick in the air. Fluorescent lights flicker\n";
 	std::cout << "somewhere down the hall. You don't remember how you got here.\n\n";
@@ -98,13 +106,16 @@ int main()
 	std::cout << "Find a way out of Fall Shell Asylum before it's too late.\n";
 	std::cout << "Your Health and Sanity will guide how far you can go.\n\n";
 
-
+	std::cout << Color::BrightCyan;
 	std::cout << "===================================\n\n";
+	std::cout << Color::Reset;
 
 
 	while (running)
 	{
-		std::cout << "\n--- What would you like to do? ---\n\n";
+		std::cout << Color::Gray;
+		std::cout << "\n--- What would you like to do? ---\n";
+		std::cout << "---Use the Scroll Wheel to View the Full Menu.---\n\n";
 		std::cout << "W. Move North\n";
 		std::cout << "S. Move South\n";
 		std::cout << "A. Move West\n";
@@ -116,8 +127,12 @@ int main()
 		if (canInteract)
 			std::cout << "3. Interact\n";
 		
+
 		std::cout << "0. Quit\n";
+		std::cout << Color::BrightYellow;
 		std::cout << "Enter choice: ";
+		std::cout << Color::Reset;
+
 
 		std::string input;
 		std::getline(std::cin, input);
@@ -126,7 +141,9 @@ int main()
 		{
 			Helper::ClearConsol();
 			GameActions::RefreshView(player, asylum, canInteract);
+			std::cout << Color::Yellow;
 			std::cout << "\nInvalid choice, please try again.\n";
+			std::cout << Color::Reset;
 			continue;
 		}
 
@@ -153,7 +170,6 @@ int main()
 		else if (choice == '3' && canInteract)
 		{
 			GameActions::Interact(player, asylum, canInteract, running);
-
 		}
 		else if (choice == '0')
 		{
@@ -164,15 +180,19 @@ int main()
 			Helper::ClearConsol();
 
 			GameActions::RefreshView(player, asylum, canInteract);
+			std::cout << Color::Yellow;
 			std::cout << "\nInvalid choice, please try again.\n";
+			std::cout << Color::Reset;
 		}
 	}
 
 	// End-of-game prompt
+	std::cout << Color::Gray;
 	std::cout << "\n--- Game Over ---\n";
 	std::cout << "1. Play Again\n";
 	std::cout << "0. Exit\n";
 	std::cout << "Enter choice: ";
+	std::cout << Color::Reset;
 
 	std::string endChoice;
 	std::getline(std::cin, endChoice);

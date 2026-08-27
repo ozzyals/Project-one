@@ -15,7 +15,9 @@ void GameActions::LookAround(Player& player, Asylum& asylum, bool& canInteract)
 	Room& room = asylum.GetRoom(player.GetRow(), player.GetCol());
 
 	std::cout << "\n" << Color::Cyan << room.GetName() << Color::Reset << "\n";
+	std::cout << Color::BrightMagenta;
 	std::cout << room.GetDescription() << "\n\n";
+	std::cout << Color::Reset;
 
 	std::cout << Color::Yellow << "Exits: ";
 	if (asylum.IsValidPosition(player.GetRow() - 1, player.GetCol())) std::cout << "North ";
@@ -26,7 +28,9 @@ void GameActions::LookAround(Player& player, Asylum& asylum, bool& canInteract)
 
 	if (room.HasItems())
 	{
+		std::cout << Color::BrightMagenta;
 		std::cout << "\nYou notice:\n";
+		std::cout << Color::Reset;
 		for (Item& item : room.GetItems())
 		{
 			std::cout << " - " << Color::Blue << item.GetName() << Color::Reset << "\n";
@@ -58,7 +62,9 @@ void GameActions::Move(Player& player, Asylum& asylum, char direction, bool& can
 	if (!asylum.IsValidPosition(row, col))
 	{
 		RefreshView(player, asylum, canInteract);
+		std::cout << Color::BrightYellow;
 		std::cout << "\nYou can't go that way.\n";
+		std::cout << Color::Reset;
 		return;
 	}
 
@@ -98,18 +104,22 @@ void GameActions::CheckInventory(Player& player, Asylum& asylum, bool& canIntera
 	Helper::ClearConsol();
 
 	RefreshView(player, asylum, canInteract);
-
+	std::cout << Color::BrightYellow;
 	std::cout << "\n--- Inventory ---\n";
 
 	if (player.GetInventory().empty())
 	{
+		std::cout << Color::BrightRed;
 		std::cout << "You have nothing.\n";
+		std::cout << Color::Reset;
 		return;
 	}
 
 	for (Item& item : player.GetInventory())
 	{
+		std::cout << Color::BrightMagenta;
 		std::cout << " - " << item.GetName() << "\n";
+		std::cout << Color::Reset;
 	}
 }
 
@@ -119,11 +129,11 @@ void GameActions::CheckStats(Player& player, Asylum& asylum, bool& canInteract)
 
 	RefreshView(player, asylum, canInteract);
 
-	std::cout << Color::Cyan << "\n--- Stats ---" << Color::Reset << "\n";
+	std::cout << Color::BrightYellow << "\n--- Stats ---" << Color::Reset << "\n";
 
 	int sanity = player.GetSanity();
 	std::string sanityColor = (sanity <= 25) ? Color::Red : (sanity <= 60) ? Color::Yellow : Color::Green;
-
+	std::cout << Color::BrightMagenta;
 	std::cout << "Sanity: " << sanityColor << sanity << Color::Reset << "\n";
 }
 
@@ -133,28 +143,34 @@ void GameActions::Interact(Player& player, Asylum& asylum, bool& canInteract, bo
 
 	if (!room.HasItems())
 	{
+		std::cout << Color::BrightCyan;
 		std::cout << "\nThere's nothing left to interact with here.\n";
+		std::cout << Color::Reset;
 		canInteract = false;
 		return;
 	}
 
 	std::vector<Item>& items = room.GetItems();
-
+	std::cout << Color::BrightCyan;
 	std::cout << "\nWhich item would you like to interact with?\n";
+	std::cout << Color::Gray;
 	std::cout << "0: Cancel\n";
 	for (size_t i = 0; i < items.size(); i++)
 	{
 		std::cout << (i + 1) << ": " << items[i].GetName() << "\n";
 	}
+	
 
 	int choice = Helper::GetValidIndex(static_cast<int>(items.size()) + 1);
-
+	std::cout << Color::Reset;
 	Helper::ClearConsol();
 
 	if (choice == 0)
 	{
 		RefreshView(player, asylum, canInteract);
+		std::cout << Color::BrightYellow;
 		std::cout << "\nNever mind.\n";
+		std::cout << Color::Reset;
 		return;
 	}
 
@@ -166,8 +182,10 @@ void GameActions::Interact(Player& player, Asylum& asylum, bool& canInteract, bo
 		if (!player.HasItem("Rusted Key"))
 		{
 			RefreshView(player, asylum, canInteract);
+			std::cout << Color::BrightRed;
 			std::cout << "\nThe door is locked shut. Despite your best efforts to\n";
 			std::cout << "open it, the door does not budge.\n";
+			std::cout << Color::Reset;
 			return;
 		}
 
@@ -181,8 +199,11 @@ void GameActions::Interact(Player& player, Asylum& asylum, bool& canInteract, bo
 
 	RefreshView(player, asylum, canInteract);
 
+	std::cout << Color::BrightYellow;
 	std::cout << "\nYou picked up: " << chosen.GetName() << "\n";
+	std::cout << Color::BrightMagenta;
 	std::cout << chosen.GetDescription() << "\n";
+	std::cout << Color::Reset;
 
 	if (chosen.GetEffect() == ItemEffect::SanityBoost)
 	{
@@ -197,6 +218,7 @@ void GameActions::Interact(Player& player, Asylum& asylum, bool& canInteract, bo
 
 		if (chosen.GetName() == "Scalpel")
 		{
+			std::cout << Color::BrightRed;
 			std::cout << "\nYour fingers close around the handle.\n";
 			std::cout << "For a moment, the surgical ward disappears.\n\n";
 
@@ -236,10 +258,13 @@ void GameActions::Interact(Player& player, Asylum& asylum, bool& canInteract, bo
 
 			std::cout << "For several seconds, you cannot remember which room you\n";
 			std::cout << "were standing in before the white walls appeared.\n";
+			std::cout << Color::Reset;
 		}
 		else
 		{
+			std::cout << Color::BrightRed;
 			std::cout << "Reading it leaves you shaken.\n";
+			std::cout << Color::Reset;
 		}
 
 		std::cout << Color::Red;

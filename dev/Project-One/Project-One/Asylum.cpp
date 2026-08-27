@@ -1,4 +1,5 @@
 #include "Asylum.h"
+#include "Helper.h"
 
 Asylum::Asylum()
 {
@@ -193,7 +194,9 @@ void Asylum::BuildLayout()
 
 void Asylum::PrintMap(int playerRow, int playerCol)
 {
+	std::cout << Color::BrightBlue;
 	std::cout << "\n--- Map ---\n\n";
+	std::cout << Color::Reset;
 
 	const int cellWidth = 16;
 
@@ -209,33 +212,49 @@ void Asylum::PrintMap(int playerRow, int playerCol)
 			if (c < width - 1 && grid[r][c + 1].IsExplored()) adjacentExplored = true;
 
 			std::string label;
+			std::string labelColor;
 
 			if (r == playerRow && c == playerCol)
 			{
 				label = "[YOU]";
+				labelColor = Color::Green;
 			}
 			else if (grid[r][c].IsBlocked())
 			{
-				label = adjacentExplored ? "Wall" : "???";
+				if (adjacentExplored)
+				{
+					label = "Wall";
+					labelColor = Color::Red;
+				}
+				else
+				{
+					label = "???";
+					labelColor = Color::Gray;
+				}
 			}
 			else if (grid[r][c].IsExplored())
 			{
 				label = grid[r][c].GetName();
+				labelColor = Color::Cyan;
 			}
 			else
 			{
 				label = "???";
+				labelColor = Color::Gray;
 			}
 
 			if (label.length() > cellWidth - 1)
 				label = label.substr(0, cellWidth - 1);
 
-			std::cout << label;
+			std::cout << labelColor << label << Color::Reset;
+
 			for (size_t pad = label.length(); pad < cellWidth; pad++)
 				std::cout << " ";
 		}
 		std::cout << "\n\n";
 	}
 
+	std::cout << Color::Gray;
 	std::cout << "[YOU] = Your location    ??? = Unexplored\n";
+	std::cout << Color::Reset;
 }

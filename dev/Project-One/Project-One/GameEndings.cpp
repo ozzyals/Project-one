@@ -73,7 +73,7 @@ void GameEndings::PrintLossEnding()
 	std::cout << "The last thing you hear is the sound of a key turning in a lock.\n\n";
 
 	std::cout << "===================================\n";
-	std::cout << "YOU LOSE.\n";
+	std::cout << "YOU HAVE LOST.\n";
 	std::cout << "===================================\n\n";
 	std::cout << Color::Reset;
 }
@@ -131,7 +131,7 @@ void GameEndings::PrintFalseEnding()
 	std::cout << "From somewhere deep inside the asylum, a bell begins to ring.\n\n";
 
 	std::cout << "===================================\n";
-	std::cout << "GAME OVER.\n";
+	std::cout << "THE ASYLUM KEPT YOU.\n";
 	std::cout << "===================================\n\n";
 	std::cout << Color::Reset;
 }
