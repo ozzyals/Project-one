@@ -68,26 +68,87 @@ void Asylum::BuildLayout()
 		}
 	}
 	// Named, non-hallway rooms
-	grid[0][0] = Room("Padded Cell", "The walls are soft and stained. Faint scratch marks run in long, desperate lines.");
-	grid[0][1] = Room("Records Room", "Rows of collapsed shelving spill patient files across the floor.");
-	grid[0][3] = Room("Nurse's Station", "An overturned desk sits beside a rusted filing cabinet. A clipboard lies open on the floor.");
-	grid[0][4] = Room("Pharmacy", "Shattered glass crunches underfoot. Most of the cabinets have already been emptied.");
-	grid[3][0] = Room("Chapel", "Rows of splintered pews face a cracked stained-glass window. It's unnervingly quiet here.");
-	grid[4][0] = Room("Library", "Towering shelves lean at odd angles. Most of the books have long since rotted away.");
-	grid[4][4] = Room("Surgical Ward", "A single operating table sits under a broken light fixture. You don't linger.");
-	grid[4][2] = Room("Entrance Hall", "A dim, dust-covered hall. The air is still. This is where you entered.");
+	grid[0][0] = Room("Padded Cell", "The walls are covered in faded padding, yellowed with age and stained in places you don't want to examine too closely. \n"
+		"Deep scratches run across the lower half of the walls. Some are old and splintered. Others look disturbingly fresh.\n" 
+		"There is no bed.No window.Just a single drain in the floor.");
+
+	grid[0][1] = Room("Records Room", "Metal shelving lines the walls, though much of it has collapsed beneath the weight of years.\n"
+		"Patient files cover the floor in uneven piles.\n" 
+		"Some are swollen from water damage. Others have been deliberately torn apart.\n" 
+		"The deeper you look, the more names seem to be missing.");
+
+	grid[0][3] = Room("Nurse's Station", "An overturned desk blocks part of the doorway. A rusted filing cabinet stands open, its drawers hanging crookedly.\n" 
+		"Old medication charts and shift reports are scattered across the floor.\n" 
+		"A clipboard rests on the desk. Its last entry is dated years after the asylum supposedly closed.");
+
+	grid[0][4] = Room("Pharmacy", "Broken bottles glitter across the floor beneath rows of empty shelves.\n" 
+		"Most of the labels have faded beyond recognition, but a few remain: sedatives, antipsychotics, sleep aids.\n" 
+		"The cabinets have been picked clean, except for a single bottle sitting untouched in the back.");
+
+	grid[3][0] = Room("Chapel", "Splintered pews face a cracked stained-glass window depicting a saint whose face has been shattered away.\n" 
+		"Dust covers everything except the altar.\n" 
+		"Someone has been here recently. You can't tell if the marks around the altar are footprints or something else.");
+
+	grid[4][0] = Room("Library", "Tall shelves lean against one another, their books swollen and warped by years of damp.\n" 
+		"Most of the titles are impossible to read.\n"
+		"Near the back, a few books have been pulled from the shelves recently, leaving clean rectangles in the dust.\n" 
+		"The room smells faintly of old paper and something medicinal.");
+
+	grid[4][4] = Room("Surgical Ward", "A single operating table sits beneath a broken examination light.\n" 
+		"Leather restraints hang from its sides, cracked but still fastened.\n" 
+		"Metal instruments lie scattered across a nearby tray, their surfaces dark with age.\n" 
+		"The room is colder than the rest of the asylum. You suddenly have the uncomfortable feeling that you should leave.");
+
+	grid[4][2] = Room("Entrance Hall", "A wide hall stretches toward a heavy metal door. Dust covers the floor \n"
+		"except for a faint trail of disturbed dirt leading away from the door.\n" 
+		"The air is cold and perfectly still.\n");
 
 	// Hallways - same purpose, different flavor text
-	grid[1][0] = Room("Corridor", "The wallpaper here has curled away from the plaster in long, brittle strips.");
-	grid[1][1] = Room("Corridor", "The hallway stretches ahead, lined with peeling wallpaper and flickering shadows.");
-	grid[1][2] = Room("Corridor", "Water drips somewhere above. The corridor smells faintly of mildew.");
-	grid[1][3] = Room("Corridor", "A row of dead lightbulbs hangs overhead. Your footsteps echo louder than they should.");
-	grid[1][4] = Room("Corridor", "A gurney lies overturned against the wall, one wheel still slowly spinning.");
-	grid[2][2] = Room("Corridor", "Gurneys, desks and chairs have been used to form a makeshift baracade. \nA narrow passage has been cleared in the center of the coridor, \nbarely wide enough to walk through comfortably.");
-	grid[3][1] = Room("Corridor", "Faded signage on the wall is too worn to read anymore.");
-	grid[3][2] = Room("Corridor", "The floor creaks with every step. Something skitters just out of sight.");
-	grid[3][3] = Room("Corridor", "A cold draft moves through the hall, though you can't find its source.");
-	grid[3][4] = Room("Corridor", "Old gurney tracks are worn into the floor, leading off in both directions.");
+
+	grid[1][0] = Room("Corridor", "The wallpaper has peeled away from the plaster in long, brittle strips.\n" 
+		"Beneath it, someone has scratched lines into the wall.\n" 
+		"You count them without meaning to.\n" 
+		"There are too many to be a coincidence.");
+
+	grid[1][1] = Room("Corridor", "The hallway stretches farther than it should.\n" 
+		"Peeling wallpaper runs along both walls, interrupted by doors with faded room numbers.\n" 
+		"Every few seconds, one of the dead lights overhead flickers");
+
+	grid[1][2] = Room("Corridor", "Water drips somewhere above you.\n" 
+		"You follow the sound for several seconds before realizing it never gets any closer.\n" 
+		"The air smells of mildew, damp plaster, and something faintly antiseptic.");
+
+	grid[1][3] = Room("Corridor", "A row of dead fluorescent lights hangs overhead.\n" 
+		"Your footsteps echo down the hallway, but the echoes seem slightly out of time with your steps.\n" 
+		"You stop walking.\n" 
+		"For a moment, something keeps walking.");
+
+	grid[1][4] = Room("Corridor", "An overturned gurney rests against the wall.\n" 
+		"One of its wheels is still turning slowly, though there is nothing touching it.\n" 
+		"A faded restraint hangs from the side, swaying almost imperceptibly.");
+
+	grid[2][2] = Room("Corridor", "Gurneys, desks, and broken chairs have been pushed together to form a makeshift barricade.\n" 
+		"A narrow passage has been cleared through the center, barely wide enough to walk through comfortably.\n" 
+		"Something has been dragged through the dust recently.");
+
+	grid[3][1] = Room("Corridor", "Faded signs hang crookedly along the walls.\n" 
+		"Most of the lettering has been worn away, but you can still make out fragments: OBSERVATION, ISOLATION, VISITORS.\n" 
+		"One sign has been scratched over so many times that the original word is impossible to recover.");
+
+	grid[3][2] = Room("Corridor", "The floor creaks beneath your weight.\n" 
+		"Somewhere just beyond the edge of your vision, something skitters across the floor.\n" 
+		"You turn quickly.\n" 
+		"Nothing is there.\n" 
+		"When you look back, you notice a set of muddy footprints leading in the direction you came from.");
+
+	grid[3][3] = Room("Corridor", "A cold draft moves through the hallway despite the absence of windows.\n" 
+		"It carries the faint smell of cigarette smoke.\n" 
+		"You haven't smelled anything like it since you entered.\n" 
+		"For a moment, you hear someone cough behind you.");
+
+	grid[3][4] = Room("Corridor", "Old gurney tracks are worn permanently into the floor, crossing one another in several directions.\n" 
+		"Near the wall, you notice a set of smaller tracks leading toward the surgical ward.\n" 
+		"They stop abruptly at the doorway.");
 
 	//items
 	grid[0][1].AddItem(Item("Patient File",
@@ -217,7 +278,7 @@ void Asylum::PrintMap(int playerRow, int playerCol)
 			if (r == playerRow && c == playerCol)
 			{
 				label = "[YOU]";
-				labelColor = Color::Green;
+				labelColor = Color::BrightYellow;
 			}
 			else if (grid[r][c].IsBlocked())
 			{

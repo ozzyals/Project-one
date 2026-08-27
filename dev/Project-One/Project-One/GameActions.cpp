@@ -28,12 +28,14 @@ void GameActions::LookAround(Player& player, Asylum& asylum, bool& canInteract)
 
 	if (room.HasItems())
 	{
-		std::cout << Color::BrightMagenta;
+		std::cout << Color::BrightYellow;
 		std::cout << "\nYou notice:\n";
 		std::cout << Color::Reset;
 		for (Item& item : room.GetItems())
 		{
-			std::cout << " - " << Color::Blue << item.GetName() << Color::Reset << "\n";
+			std::cout << Color::BrightMagenta;
+			std::cout << " - " << item.GetName() << Color::Reset << "\n";
+			std::cout << Color::Reset;
 		}
 	}
 }
@@ -91,8 +93,9 @@ void GameActions::Move(Player& player, Asylum& asylum, char direction, bool& can
 
 		if (entryCost > 0)
 		{
-			std::cout << Color::Red;
+			std::cout << Color::BrightYellow;
 			std::cout << "Something about this place unsettles you.\n";
+			std::cout << Color::BrightRed;
 			std::cout << "(-" << entryCost << " Sanity)\n";
 			std::cout << Color::Reset;
 		}
