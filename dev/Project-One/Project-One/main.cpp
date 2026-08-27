@@ -15,10 +15,17 @@ void LookAround(Player& player, Asylum& asylum, bool& canInteract);
 void CheckInventory(Player& player, Asylum& asylum, bool& canInteract);
 void CheckStats(Player& player, Asylum& asylum, bool& canInteract);
 void Interact(Player& player, Asylum& asylum, bool& canInteract, bool& running);
+void UpdateRoomState(Player& player, Asylum& asylum, bool& canInteract);
 
 //Opening screen
 int main()
 {
+	bool playAgain = true;
+
+	while (playAgain)
+	{
+		Helper::ClearConsol();
+
 	std::cout << R"(		 __      __       .__                                  __               
 		/  \    /  \ ____ |  |   ____  ____   _____   ____   _/  |_  ____       
 		\   \/\/   // __ \|  | _/ ___\/  _ \ /     \_/ __ \  \   __\/  _ \      
@@ -110,9 +117,11 @@ int main()
 	bool running = true;
 	bool canInteract = false;
 
-	
+	UpdateRoomState(player, asylum, canInteract);
 	asylum.PrintMap(player.GetRow(), player.GetCol());
 	LookAround(player, asylum, canInteract);
+
+
 
 	// Initial Description
 	std::cout << "\n";
@@ -159,6 +168,7 @@ int main()
 		if (input.length() != 1)
 		{
 			Helper::ClearConsol();
+			UpdateRoomState(player, asylum, canInteract);
 			asylum.PrintMap(player.GetRow(), player.GetCol());
 			LookAround(player, asylum, canInteract);
 			std::cout << "\nInvalid choice, please try again.\n";
@@ -201,17 +211,32 @@ int main()
 		else
 		{
 			Helper::ClearConsol();
-			
+
+			UpdateRoomState(player, asylum, canInteract);
 			asylum.PrintMap(player.GetRow(), player.GetCol());
 			LookAround(player, asylum, canInteract);
 			std::cout << "\nInvalid choice, please try again.\n";
 		}
 	}
 
+	// End-of-game prompt
+	std::cout << "\n--- Game Over ---\n";
+	std::cout << "1. Play Again\n";
+	std::cout << "0. Exit\n";
+	std::cout << "Enter choice: ";
+
+	std::string endChoice;
+	std::getline(std::cin, endChoice);
+
+	if (endChoice != "1")
+	{
+		playAgain = false;
+	}
+	}
+
 	std::cout << "\nThanks for playing.\n";
-	
+
 	return 0;
-	
 }
 
 void Move(Player& player, Asylum& asylum, char direction, bool& canInteract, bool& running)
@@ -230,6 +255,7 @@ void Move(Player& player, Asylum& asylum, char direction, bool& canInteract, boo
 
 	if (!asylum.IsValidPosition(row, col))
 	{
+		UpdateRoomState(player, asylum, canInteract);
 		asylum.PrintMap(player.GetRow(), player.GetCol());
 		LookAround(player, asylum, canInteract);
 		std::cout << "\nYou can't go that way.\n";
@@ -254,6 +280,7 @@ void Move(Player& player, Asylum& asylum, char direction, bool& canInteract, boo
 	}
 	else
 	{
+		UpdateRoomState(player, asylum, canInteract);
 		asylum.PrintMap(player.GetRow(), player.GetCol());
 		LookAround(player, asylum, canInteract);
 
@@ -267,6 +294,14 @@ void Move(Player& player, Asylum& asylum, char direction, bool& canInteract, boo
 			std::cout << Color::Reset;
 		}
 	}
+}
+
+void UpdateRoomState(Player& player, Asylum& asylum, bool& canInteract)
+{
+	Room& room = asylum.GetRoom(player.GetRow(), player.GetCol());
+	room.SetExplored(true);
+
+	canInteract = room.HasItems();
 }
 
 void LookAround(Player& player, Asylum& asylum, bool& canInteract)
@@ -308,7 +343,8 @@ void LookAround(Player& player, Asylum& asylum, bool& canInteract)
 void CheckInventory(Player& player, Asylum& asylum, bool& canInteract)
 {
 	Helper::ClearConsol();
-
+	
+	UpdateRoomState(player, asylum, canInteract);
 	asylum.PrintMap(player.GetRow(), player.GetCol());
 	LookAround(player, asylum, canInteract);
 	
@@ -332,6 +368,7 @@ void CheckStats(Player& player, Asylum& asylum, bool& canInteract)
 {
 
 	Helper::ClearConsol();
+	UpdateRoomState(player, asylum, canInteract);
 	asylum.PrintMap(player.GetRow(), player.GetCol());
 	LookAround(player, asylum, canInteract);
 	std::cout << Color::Cyan << "\n--- Stats ---" << Color::Reset << "\n";
@@ -364,6 +401,7 @@ void Interact(Player& player, Asylum& asylum, bool& canInteract, bool& running)
 
 	if (choice == 0)
 	{
+		UpdateRoomState(player, asylum, canInteract);
 		asylum.PrintMap(player.GetRow(), player.GetCol());
 		LookAround(player, asylum, canInteract);
 		std::cout << "\nNever mind.\n";
@@ -377,6 +415,7 @@ void Interact(Player& player, Asylum& asylum, bool& canInteract, bool& running)
 	{
 		if (!player.HasItem("Rusted Key"))
 		{
+			UpdateRoomState(player, asylum, canInteract);
 			asylum.PrintMap(player.GetRow(), player.GetCol());
 			LookAround(player, asylum, canInteract);
 			std::cout << "\nThe door is locked shut. Despite your best efforts to\n";
@@ -392,6 +431,7 @@ void Interact(Player& player, Asylum& asylum, bool& canInteract, bool& running)
 
 	player.AddItem(chosen);
 
+	UpdateRoomState(player, asylum, canInteract);
 	asylum.PrintMap(player.GetRow(), player.GetCol());
 	LookAround(player, asylum, canInteract);
 
