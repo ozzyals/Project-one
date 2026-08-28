@@ -10,13 +10,31 @@
 namespace Color
 {
 	const std::string Reset = "\033[0m";
+
+	// Standard colors
+	const std::string Black = "\033[30m";
 	const std::string Red = "\033[31m";
 	const std::string Green = "\033[32m";
 	const std::string Yellow = "\033[33m";
 	const std::string Blue = "\033[34m";
+	const std::string Magenta = "\033[35m";
 	const std::string Cyan = "\033[36m";
+	const std::string White = "\033[37m";
 	const std::string Gray = "\033[90m";
-	const std::string White = "\033[97m";
+
+	// Bright/bold variants
+	const std::string BrightRed = "\033[91m";
+	const std::string BrightGreen = "\033[92m";
+	const std::string BrightYellow = "\033[93m";
+	const std::string BrightBlue = "\033[94m";
+	const std::string BrightMagenta = "\033[95m";
+	const std::string BrightCyan = "\033[96m";
+	const std::string BrightWhite = "\033[97m";
+
+	// Text styles (combine with a color, e.g. Bold + Red)
+	const std::string Bold = "\033[1m";
+	const std::string Underline = "\033[4m";
+	const std::string Dim = "\033[2m";
 }
 
 namespace Helper {
