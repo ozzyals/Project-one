@@ -60,4 +60,13 @@ Going into week three I want to make the game better to look at. ASCII art Diffe
 
 ### Week 4
 
-My final stand up...
+⚙️ Overview – This past week I worked on adding a loop that lets the player chose if they want to play again or end the game when they reach an end game condition. I felt this made more sense with my project than adding a save function. Additionally I did a lot of polishing.
+
+🛠️ Project Wrap-Up – This past week I polished everything. I recolored All the text and expanded on the room descriptions. I moved all the functions declared in Main to a new class GameFunctions. Additionally, I fixed a bug that was causing the fog of war on my map to be behind one move.
+
+🌵 Challenges – The biggest challenge this week was the tediousness of the work I was doing. Nothing was super complicated but all the polish required going over Literally every line to make small changes. 
+
+📚 Biggest Takeaway – The Biggest thing I got from this class was confidence. I know now that if I plan, work one piece at a time, and put in regular work, I can totally make a program from scratch. There were lots of challenges this month but nothing that couldn't be figured out with the many resources at my disposal.
+ 
+🔮 Future Development – I would significantly expand the layout, the story, and the branching narrative. I would like to have incorporated ASCII art but In a way that wouldn't clutter the UI.
+
